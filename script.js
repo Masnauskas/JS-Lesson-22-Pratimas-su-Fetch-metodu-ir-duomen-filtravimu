@@ -144,7 +144,7 @@ async function getData(url) {
     const response = await fetch(url);
     if (response.ok) {
       data = await response.json();
-      // console.log(data);
+      console.log(data);
 
       drawTableData(data);
     }
@@ -154,20 +154,33 @@ async function getData(url) {
 }
 getData(url);
 
-//sort table
+// sort table
 function sortTableA2Z(column) {
-  data.sort((a, b) => {
-    if (a[column] < b[column]) {
-      return -1;
-    } else if (a[column] < b[column]) {
-      return 1;
-    } else {
-      return 0;
-    }
-  });
+  if (column === "lastName") {
+    data.sort((a, b) => {
+      if (a.name.split(" ")[1] < b.name.split(" ")[1]) {
+        return -1;
+      } else if (a.name.split(" ")[1] < b.name.split(" ")[1]) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  } else {
+    data.sort((a, b) => {
+      if (a[column] < b[column]) {
+        return -1;
+      } else if (a[column] < b[column]) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  }
 
   drawTableData(data);
 }
+
 function sortTableZ2A(column) {
   data
     .sort((a, b) => {
@@ -206,20 +219,16 @@ document.getElementById("favouriteColour").addEventListener("click", () => {
     clicked = true;
   }
 });
-document.getElementById("firstName").addEventListener("click", () => {
-  //"name"
+
+document.getElementById("lastName").addEventListener("click", () => {
   if (clicked) {
-    sortTableZ2A("name");
+    sortTableZ2A("lastName");
     clicked = false;
   } else {
-    sortTableA2Z("name");
+    sortTableA2Z("lastName");
     clicked = true;
   }
 });
-
-// document.getElementById("lastName").addEventListener("click", () => {
-//nezinau kaip padaryt, kad paimtu last name ir su juo sortintu
-// });
 
 document.getElementById("id").addEventListener("click", () => {
   //"id"
@@ -228,6 +237,21 @@ document.getElementById("id").addEventListener("click", () => {
     clicked = false;
   } else {
     sortTableA2Z("id");
+    clicked = true;
+  }
+});
+
+//1 pastebejimas
+document.getElementById("firstName").addEventListener("click", () => {
+  //"name"
+  if (clicked == true || document.getElementById("id").clicked == true) {
+    sortTableA2Z("name");
+    clicked = false;
+  } else if (clicked == false) {
+    sortTableZ2A("name");
+    clicked = true;
+  } else {
+    sortTableA2Z("name");
     clicked = true;
   }
 });
